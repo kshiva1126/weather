@@ -22,8 +22,11 @@ package cmd
 
 import (
 	"fmt"
+	"net/http"
+	"net/url"
 	"os"
 
+	"github.com/kshiva1126/weather/common"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -44,7 +47,20 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Today's weather is sunny!\nHave a good day!")
+		common.EnvLoad()
+		val := url.Values{}
+		val.Add("city", "Tokyo")
+		key := os.Getenv("API_KEY")
+
+		resp, err := http.Get(ENDPOINT + "?q=" + val.Get("city") + ",jp&APPID=" + key)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
+		defer resp.Body.Close()
+
+		common.Execute(resp)
 	},
 }
 

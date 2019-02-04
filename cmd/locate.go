@@ -22,13 +22,12 @@ package cmd
 
 import (
 	"fmt"
-	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
 
-	"github.com/joho/godotenv"
+	"github.com/kshiva1126/weather/common"
+
 	"github.com/spf13/cobra"
 )
 
@@ -36,30 +35,13 @@ const (
 	ENDPOINT = "http://api.openweathermap.org/data/2.5/forecast"
 )
 
-func EnvLoad() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-}
-
-func execute(response *http.Response) {
-	body, err := ioutil.ReadAll(response.Body)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	fmt.Println(string(body))
-}
-
 // locateCmd represents the locate command
 var locateCmd = &cobra.Command{
 	Use:   "locate",
 	Short: "notice the weather of locate",
 	Long:  `notice the weather of the arg locate(For example Tokyo, Osaka, Fukuoka, and so on)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		EnvLoad()
+		common.EnvLoad()
 		val := url.Values{}
 		val.Add("city", "Tokyo")
 		key := os.Getenv("API_KEY")
@@ -72,7 +54,7 @@ var locateCmd = &cobra.Command{
 
 		defer resp.Body.Close()
 
-		execute(resp)
+		common.Execute(resp)
 	},
 }
 
