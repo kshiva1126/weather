@@ -52,7 +52,7 @@ to quickly create a Cobra application.`,
 		val.Add("city", "Tokyo")
 		key := os.Getenv("API_KEY")
 
-		resp, err := http.Get(ENDPOINT + "?q=" + val.Get("city") + ",jp&APPID=" + key)
+		resp, err := http.Get(ENDPOINT + "?q=" + val.Get("city") + "&units=metric&APPID=" + key)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -60,7 +60,7 @@ to quickly create a Cobra application.`,
 
 		defer resp.Body.Close()
 
-		common.Execute(resp)
+		common.ParseJsonReceivedAndExecute(resp)
 	},
 }
 

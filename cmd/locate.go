@@ -43,10 +43,14 @@ var locateCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		common.EnvLoad()
 		val := url.Values{}
-		val.Add("city", "Tokyo")
+
+		var place string
+		place = args[0]
+
+		val.Add("city", place)
 		key := os.Getenv("API_KEY")
 
-		resp, err := http.Get(ENDPOINT + "?q=" + val.Get("city") + ",jp&APPID=" + key)
+		resp, err := http.Get(ENDPOINT + "?q=" + val.Get("city") + "&units=metric&APPID=" + key)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -54,7 +58,7 @@ var locateCmd = &cobra.Command{
 
 		defer resp.Body.Close()
 
-		common.Execute(resp)
+		common.ParseJsonReceivedAndExecute(resp)
 	},
 }
 
