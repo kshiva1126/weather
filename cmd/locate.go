@@ -44,9 +44,7 @@ var locateCmd = &cobra.Command{
 		common.EnvLoad()
 		val := url.Values{}
 
-		var place string
-		place = args[0]
-
+		place := args[0]
 		val.Add("city", place)
 		key := os.Getenv("API_KEY")
 
@@ -60,18 +58,9 @@ var locateCmd = &cobra.Command{
 
 		common.ParseJsonReceivedAndExecute(resp)
 	},
+	Args: cobra.ExactArgs(1),
 }
 
 func init() {
 	rootCmd.AddCommand(locateCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// locateCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// locateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
