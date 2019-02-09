@@ -44,15 +44,13 @@ examples and usage of using your application. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
 		common.EnvLoad()
 		val := url.Values{}
 		val.Add("city", "Tokyo")
 		key := os.Getenv("API_KEY")
 
-		resp, err := http.Get(ENDPOINT + "?q=" + val.Get("city") + ",jp&APPID=" + key)
+		resp, err := http.Get(ENDPOINT + "?q=" + val.Get("city") + "&units=metric&APPID=" + key)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -60,7 +58,7 @@ to quickly create a Cobra application.`,
 
 		defer resp.Body.Close()
 
-		common.Execute(resp)
+		common.ParseJsonReceivedAndExecute(resp)
 	},
 }
 

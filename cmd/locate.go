@@ -43,10 +43,12 @@ var locateCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		common.EnvLoad()
 		val := url.Values{}
-		val.Add("city", "Tokyo")
+
+		place := args[0]
+		val.Add("city", place)
 		key := os.Getenv("API_KEY")
 
-		resp, err := http.Get(ENDPOINT + "?q=" + val.Get("city") + ",jp&APPID=" + key)
+		resp, err := http.Get(ENDPOINT + "?q=" + val.Get("city") + "&units=metric&APPID=" + key)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -54,20 +56,11 @@ var locateCmd = &cobra.Command{
 
 		defer resp.Body.Close()
 
-		common.Execute(resp)
+		common.ParseJsonReceivedAndExecute(resp)
 	},
+	Args: cobra.ExactArgs(1),
 }
 
 func init() {
 	rootCmd.AddCommand(locateCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// locateCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// locateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
