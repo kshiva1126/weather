@@ -79,8 +79,8 @@ func ParseJsonReceivedAndExecute(response *http.Response) {
 	jsonBytes := ([]byte)(body)
 	weather := new(WeatherInformations)
 
-	if err := json.Unmarshal(jsonBytes, weather); err != nil {
-		fmt.Println("JSON Unmarshal error:", err)
+	if err = json.Unmarshal(jsonBytes, weather); err != nil {
+		fmt.Println("Sorry, the city is not found. \nPlease kindly confirm it.")
 		return
 	}
 
