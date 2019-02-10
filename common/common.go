@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/joho/godotenv"
@@ -63,7 +64,7 @@ type WeatherInformations struct {
 }
 
 func EnvLoad() {
-	err := godotenv.Load()
+	err := godotenv.Load(os.ExpandEnv("$GOPATH/src/github.com/kshiva1126/weather/.env"))
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
