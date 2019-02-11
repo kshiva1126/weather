@@ -2,6 +2,8 @@
 
 Do you want to know the current weather conditions?
 
+**go install github.com/kshiva1126/weather** and run the following commands!
+
 ```
 weather
 ```
